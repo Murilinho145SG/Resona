@@ -2,13 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import "./css/player.css";
 import volumeIcon from "./assets/volume.png"
 import volumeDeafenIcon from "./assets/volume_deafen.png"
+import afterSongIcon from "./assets/after.png"
+import beforeSongIcon from "./assets/before.png"
+import pauseIcon from "./assets/pause.png"
+import playIcon from "./assets/play.png"
+
 
 
 function Player() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [songs, setSongs] = useState([]);
-    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const [currentIndex, setCurrentSongIndex] = useState(0);
     const [volume, setVolume] = useState(1);
+    const [duration, setDuration] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
     const audioRef = useRef(null);
 
     useEffect(() => {
@@ -95,17 +102,45 @@ function Player() {
         }
     }
 
+    const handleTimeUpdate = () => {
+        setCurrentTime(audioRef.current.currentTime);
+    }
+
+    const handleLoadedMetaData = () => {
+        setDuration(audioRef.current.duration);
+    }
+
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+        return `${formattedMinutes}:${formattedSeconds}`;
+    }
+
+    const handleCurrentTime = (event) => {
+        const newTime = event.target.value
+        setCurrentTime(newTime);
+        audioRef.current.currentTime = newTime
+    }
+
+    const nextSong = () => {
+        playSong(currentIndex + 1);
+    }
+
+    const beforeSong = () => {
+        playSong(currentIndex - 1);
+    }
+
     return (
-        <div>
-            <h2>Música</h2>
+        <div className="player">
+            <h2>{String(songs[currentIndex] == null ? "" : songs[currentIndex].title)}</h2>
             {songs.length > 0 && (
-                <audio ref={audioRef} preload="metadata" />
+                <audio ref={audioRef} preload="metadata" onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetaData} />
             )}
 
             <div>
-                <button onClick={togglePlayPause}>
-                    {isPlaying ? "Pause" : "Play"}
-                </button>
+                <img onClick={togglePlayPause} src={isPlaying ? pauseIcon : playIcon} />
             </div>
             <div>
                 <h3>Playlist:</h3>
@@ -119,9 +154,18 @@ function Player() {
                     ))}
                 </ul>
             </div>
+            <div id="time-container">
+                <input id="time" type="range" min="0" max={duration} step="0.01" onChange={handleCurrentTime} value={currentTime} />
+                <p>{formatTime(currentTime)}</p>
+                <p>{formatTime(duration)}</p>
+            </div>
             <div id="volume-container">
                 <img src={volume > 0 ? volumeIcon : volumeDeafenIcon} alt="VolumeIcon" onClick={mute} />
                 <input id="volume" type="range" min="0" max="1" step="0.01" value={volume} onChange={handleVolumeChange} />
+            </div>
+            <div>
+                <img src={afterSongIcon} alt="afterMusic" onClick={nextSong} />
+                <img src={beforeSongIcon} alt="beforeMusic" onClick={beforeSong} />
             </div>
         </div>
     );

@@ -1,0 +1,12 @@
+img {
+    width: 30px;
+    height: 30px;
+}
+
+.player {
+    background-color: rgb(172, 93, 93);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+}
