@@ -1,20 +1,20 @@
-import SongsContext from "./SongsContext";
+// import SongsContext from "./SongsContext";
 
-const [songs, setSongs] = useState([]);
+// const [songs, setSongs] = useState([]);
 
-function MusicList() {
-    const { songs, setSong } = useContext(SongsContext);
+// function MusicList() {
+//     const { songs, setSong } = useContext(SongsContext);
 
-    return (
-        <div className="music-list">
+//     return (
+//         <div className="music-list">
 
-        </div>
-    )
-}
+//         </div>
+//     )
+// }
 
-export {
-    songs,
-    setSongs
-}
+// export {
+//     songs,
+//     setSongs
+// }
 
-export default MusicList
+// export default MusicList

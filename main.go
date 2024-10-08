@@ -5,12 +5,22 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/gorilla/handlers"
 )
 
 func main() {
+	go runReact()
+	go runAPI()
+
+	// Impede que a função main termine imediatamente
+	select {}
+}
+
+func runAPI() {
 	http.Handle("/audio/", http.StripPrefix("/audio/", http.FileServer(http.Dir("./audios"))))
 	http.HandleFunc("/api/songs", listAudioFiles)
 
@@ -19,9 +29,21 @@ func main() {
 	methods := handlers.AllowedMethods([]string{"GET", "OPTIONS"})
 
 	err := http.ListenAndServe(":8080", handlers.CORS(headers, origins, methods)(http.DefaultServeMux))
-	
+
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func runReact() {
+	cmd := exec.Command("npm", "start")
+
+	// Captura stdout e stderr em tempo real
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("Erro ao executar npm start: %v", err)
 	}
 }
 
