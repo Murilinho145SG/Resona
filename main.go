@@ -18,7 +18,6 @@ func main() {
 	go runReact()
 	go runAPI()
 
-	// Impede que a função main termine imediatamente
 	select {}
 }
 
