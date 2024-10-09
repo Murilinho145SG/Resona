@@ -10,9 +10,11 @@ import (
 	"strings"
 
 	"github.com/gorilla/handlers"
+	"main.go/utils"
 )
 
 func main() {
+	go utils.DownloadFiles("musics", "")
 	go runReact()
 	go runAPI()
 

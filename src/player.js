@@ -7,8 +7,6 @@ import beforeSongIcon from "./assets/before.png"
 import pauseIcon from "./assets/pause.png"
 import playIcon from "./assets/play.png"
 
-
-
 function Player() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [songs, setSongs] = useState([]);
@@ -138,7 +136,6 @@ function Player() {
             {songs.length > 0 && (
                 <audio ref={audioRef} preload="metadata" onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetaData} />
             )}
-
             <div>
                 <img onClick={togglePlayPause} src={isPlaying ? pauseIcon : playIcon} />
             </div>
