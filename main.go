@@ -39,7 +39,6 @@ func runAPI() {
 func runReact() {
 	cmd := exec.Command("npm", "start")
 
-	// Captura stdout e stderr em tempo real
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
