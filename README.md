@@ -19,3 +19,5 @@ func main() {
 ```
 
 This code will start both the API and the React part of the project
+
+remember to initialize the node project first using the **`yarn`** command
